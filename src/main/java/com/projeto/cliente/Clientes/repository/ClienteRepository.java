@@ -12,7 +12,5 @@ import java.util.Optional;
 @Repository
 public interface ClienteRepository extends JpaRepository <Cliente, Long> {
 
-    Optional<Cliente> findByNome(String clienteNome);
-    Optional<Cliente> findByDataNascimento(LocalDate clienteDataN);
-    Optional<Cliente> findByDataCriacao(LocalDate clienteDataC);
+    List<Cliente> findByNomeContaining(String cliNome);
 }

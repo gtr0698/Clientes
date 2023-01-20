@@ -7,10 +7,13 @@ import com.projeto.cliente.Clientes.model.Cliente;
 import com.projeto.cliente.Clientes.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,32 +31,15 @@ public class ClienteService {
 
     }
 
-    public Page<Cliente> listar(Pageable pageable){
+    Sort sort = Sort.by("nome").ascending();
+    Pageable pageable = PageRequest.of(0,5,sort);
+
+    public Page<Cliente> listar(){
         return clienteRepository.findAll(pageable);
     }
 
-    public Cliente buscar(Long clienteId){
-        Cliente cliente = verificaExistencia(clienteId);
-
-        return cliente;
-    }
-
-    public Cliente buscarPorNome(String clienteNome){
-        Cliente cliente = verificaExistenciaNome(clienteNome);
-
-        return cliente;
-    }
-
-    public Cliente buscarPorDtNascimento(LocalDate dtNascimento){
-        Cliente cliente = verificaExistenciaDataN(dtNascimento);
-
-        return cliente;
-    }
-
-    public Cliente buscarPorDtCriacao(LocalDate dtCriacao){
-        Cliente cliente = verificaExistenciaDataC(dtCriacao);
-
-        return cliente;
+    public List<Cliente> buscar(String cliNome){
+        return clienteRepository.findByNomeContaining(cliNome);
     }
 
     public Cliente atualizar(Long clienteId, UpdateClienteRequestDto clienteRequest){
@@ -74,39 +60,6 @@ public class ClienteService {
 
     public Cliente verificaExistencia(Long clienteId){
         Optional<Cliente> cliente = clienteRepository.findById(clienteId);
-
-        if(cliente.isEmpty()){
-
-            throw new RegraException("Cliente não encontrado");
-        }
-
-        return cliente.get();
-    }
-
-    public Cliente verificaExistenciaNome(String clienteNome){
-        Optional<Cliente> cliente = clienteRepository.findByNome(clienteNome);
-
-        if(cliente.isEmpty()){
-
-            throw new RegraException("Cliente não encontrado");
-        }
-
-        return cliente.get();
-    }
-
-    public Cliente verificaExistenciaDataN(LocalDate clienteDataN){
-        Optional<Cliente> cliente = clienteRepository.findByDataNascimento(clienteDataN);
-
-        if(cliente.isEmpty()){
-
-            throw new RegraException("Cliente não encontrado");
-        }
-
-        return cliente.get();
-    }
-
-    public Cliente verificaExistenciaDataC(LocalDate clienteDataC){
-        Optional<Cliente> cliente = clienteRepository.findByDataCriacao(clienteDataC);
 
         if(cliente.isEmpty()){
 

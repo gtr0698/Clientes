@@ -22,39 +22,19 @@ public class ClienteController {
     private ClienteService clienteService;
 
     @GetMapping
-    public ResponseEntity<List<ClienteResponseDto>> listar(Pageable pageable){
-        List<ClienteResponseDto> clientes = clienteService.listar(pageable).stream()
+    public ResponseEntity<List<ClienteResponseDto>> listar(){
+        List<ClienteResponseDto> clientes = clienteService.listar().stream()
                 .map(cliente -> new ClienteResponseDto(cliente)).collect(Collectors.toList());
 
         return ResponseEntity.ok(clientes);
     }
 
-    @GetMapping("/{clienteId}")
-    public ResponseEntity<ClienteResponseDto> buscar(@PathVariable Long clienteId){
-        ClienteResponseDto clienteLocalizado = new ClienteResponseDto(clienteService.buscar(clienteId));
+    @GetMapping("/busca")
+    public ResponseEntity<List<ClienteResponseDto>> buscar(@RequestParam String nome){
+        List<ClienteResponseDto> clienteLocalizado = clienteService.buscar(nome).stream()
+                .map(cliente -> new ClienteResponseDto(cliente)).collect(Collectors.toList());
 
         return ResponseEntity.ok(clienteLocalizado);
-    }
-
-    @GetMapping("/nome/{clienteNome}")
-    public ResponseEntity<ClienteResponseDto> buscarPorNome(@PathVariable String clienteNome){
-        ClienteResponseDto clienteLocalizadoNome = new ClienteResponseDto(clienteService.buscarPorNome(clienteNome));
-
-        return ResponseEntity.ok(clienteLocalizadoNome);
-    }
-
-    @GetMapping("/datan/{clienteDtNascimento}")
-    public ResponseEntity<ClienteResponseDto> buscarPorDataNascimento(@PathVariable LocalDate clienteDataNascimento){
-        ClienteResponseDto clienteDtNascimento = new ClienteResponseDto(clienteService.buscarPorDtNascimento(clienteDataNascimento));
-
-        return ResponseEntity.ok(clienteDtNascimento);
-    }
-
-    @GetMapping("/datac/{clienteDtCriacao}")
-    public ResponseEntity<ClienteResponseDto> buscarPorDataCriacao(@PathVariable LocalDate clienteDataCriacao){
-        ClienteResponseDto clienteDtCriacao = new ClienteResponseDto(clienteService.buscarPorDtCriacao(clienteDataCriacao));
-
-        return ResponseEntity.ok(clienteDtCriacao);
     }
 
     @PostMapping
