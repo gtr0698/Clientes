@@ -7,12 +7,8 @@ import com.projeto.cliente.Clientes.model.Cliente;
 import com.projeto.cliente.Clientes.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,10 +27,7 @@ public class ClienteService {
 
     }
 
-    Sort sort = Sort.by("nome").ascending();
-    Pageable pageable = PageRequest.of(0,5,sort);
-
-    public Page<Cliente> listar(){
+    public Page<Cliente> listar(Pageable pageable){
         return clienteRepository.findAll(pageable);
     }
 
