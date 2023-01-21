@@ -9,7 +9,6 @@ import com.projeto.cliente.Clientes.repository.ClienteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Files;
@@ -26,7 +25,8 @@ public class arquivoCsvComponent {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
 
-    @Scheduled(cron = ("*/30 * * * * *"), zone = "America/Sao_Paulo")
+    //@Scheduled(cron = ("*/30 * * * * *"), zone = "America/Sao_Paulo")
+    @Scheduled(cron = ("0 30 * * * *"), zone = "America/Sao_Paulo")
     public void arquivoCsv() throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
         List<Cliente> clientes = clienteRepository.findAll();
 
