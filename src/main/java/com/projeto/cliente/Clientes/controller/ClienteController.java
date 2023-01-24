@@ -13,10 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+
+import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,8 +83,8 @@ public class ClienteController {
             Map<String, Object> parametros = new HashMap<String, Object>();
             parametros.put("ConsultaDataSource", consultaJRBean);
 
-            //Editar o caminho dos arquivos salvos no parametro sourceFileName
-            JasperPrint jasperPrint = JasperFillManager.fillReport("C:\\Users\\guilh\\Documents\\Projetos\\Clientes\\src\\main\\resources\\templates\\customer.jasper", parametros, new JREmptyDataSource());
+            InputStream inputStream = this.getClass().getResourceAsStream("/relatorios/customer.jasper");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(inputStream,parametros, new JRBeanCollectionDataSource(dadosRelatorio));
 
             OutputStream outputStream = new FileOutputStream(new File(outputFile));
 
